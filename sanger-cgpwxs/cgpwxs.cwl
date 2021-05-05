@@ -117,6 +117,14 @@ inputs:
       separate: true
       shellQuote: true
 
+  cores:
+    type: int?
+    default: 4
+    doc: "Number of CPU cores to use hwere possible. w/o this option the container uses all available cores"
+    inputBinding:
+        prefix: -cores
+        position: 11
+
 outputs:
   run_params:
     type: File
