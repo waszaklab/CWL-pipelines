@@ -159,7 +159,7 @@ inputs:
       separate: true
 
   cores:
-    input: int?
+    type: int?
     default: 4
     doc: "Set the number of cpu/cores available [default all]."
     inputBinding:
