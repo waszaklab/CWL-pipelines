@@ -166,7 +166,7 @@ inputs:
       prefix: -cores
       separate: true
 
-  pindelcpu
+  pindelcpu:
     input: int?
     default: 4
     doc: "Max CPUs for pindel analysis, >8 ignored"
