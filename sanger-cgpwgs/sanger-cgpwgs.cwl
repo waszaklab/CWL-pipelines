@@ -131,7 +131,7 @@ inputs:
   pindelcpu:
     type: int?
     doc: "Max cpus for pindel, ignores >8"
-    default: 8
+    default: 4
     inputBinding:
       prefix: -pindelcpu
       separate: true
@@ -164,14 +164,6 @@ inputs:
     doc: "Set the number of cpu/cores available [default all]."
     inputBinding:
       prefix: -cores
-      separate: true
-
-  pindelcpu:
-    input: int?
-    default: 4
-    doc: "Max CPUs for pindel analysis, >8 ignored"
-    inputBinding:
-      prefix: -pindelcpu
       separate: true
 
 outputs:
