@@ -31,7 +31,7 @@ inputs:
 #        items: File
 
   raw_reads:
-    doc: "RAW read input, can be BAM files or pairs of FastQ files (optionally gzip compressed)
+    doc: "RAW read input, can be BAM files or pairs of FastQ files (optionally gzip compressed)"
     type: array
       items: File
 
