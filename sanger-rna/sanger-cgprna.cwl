@@ -19,6 +19,7 @@ requirements:
   - class: SubworkflowFeatureRequirement
   - class: InlineJavascriptRequirement
   - class: StepInputExpressionRequirement
+  - class: MultipleInputFeatureRequirement
 
 inputs:
 
@@ -30,11 +31,18 @@ inputs:
 #        type: array
 #        items: File
 
-  raw_reads:
-    doc: "RAW read input, can be BAM files or pairs of FastQ files (optionally gzip compressed)"
+  raw_reads1:
+    doc: "RAW read input, can be BAM files or FastQ files, pair with raw_reads2 (optionally gzip compressed)"
     type:
       type: array
       items: File
+
+  raw_reads2:
+    doc: "RAW read input, can be BAM files or FastQ files, pair with raw_reads1 (optionally gzip compressed)"
+    type:
+      type: array
+      items: File
+
 
   map_reference:
     type: File
@@ -74,61 +82,35 @@ inputs:
     default: 1
     doc: "Number of threads to use for merging step."
 
-    #  rg_id_tags:
-    #    type:
-    #      type: array
-    #      items: ["null", string]
-    #    doc: "Readgroup ID tag values. It should have one value for each group of input raw files. Use empty string to use defaults or existing RG ID in the input BAM. It only uses the RG ID value in the first BAM file of a group."
-    #
-    #  lb_tags:
-    #    type:
-    #      type: array
-    #      items: ["null", string]
-    #    doc: "Sequencing library tag values in the output BAM header. It should have one value for each group of input raw files. Use empty string to set it to none or existing LB tag in the input BAM. It only uses the LB tag value in the first BAM file of a group."
-    #
-    #  ds_tags:
-    #    type:
-    #      type: array
-    #      items: ["null", string]
-    #    doc: "Description tag value in the output BAM header. It should have one value for each group of input raw files. Use empty string to set it to none or existing DS tag in the input BAM. It only uses the DS tag value in the first BAM file of a group."
-    #
-    #  pl_tags:
-    #    type:
-    #      type: array
-    #      items: ["null", string]
-    #    doc: "Platform tag value in the output BAM header. It should have one value for each group of input raw files. Use empty string to set it to none or existing PL tag in the input BAM. It only uses the PL tag value in the first BAM file of a group."
-    #
-    #  pu_tags:
-    #    type:
-    #      type: array
-    #      items: ["null", string]
-    #    doc: "Platform unit tag value in the output BAM header. It should have one value for each group of input raw files. Use empty string to set it to none or existing PU tag in the input BAM. It only uses the PU tag value in the first BAM file of a group."
+  rg_id_tags:
+    type:
+      type: array
+      items: ["null", string]
+    doc: "Readgroup ID tag values. It should have one value for each group of input raw files. Use empty string to use defaults or existing RG ID in the input BAM. It only uses the RG ID value in the first BAM file of a group."
 
+  lb_tags:
+    type:
+      type: array
+      items: ["null", string]
+    doc: "Sequencing library tag values in the output BAM header. It should have one value for each group of input raw files. Use empty string to set it to none or existing LB tag in the input BAM. It only uses the LB tag value in the first BAM file of a group."
 
-  rg_id_tag:
-    type: string?
-    default: "null"
-    doc: "Readgroup ID tag values. Use empty string to use defaults or existing RG ID in the input BAM."
+  ds_tags:
+    type:
+      type: array
+      items: ["null", string]
+    doc: "Description tag value in the output BAM header. It should have one value for each group of input raw files. Use empty string to set it to none or existing DS tag in the input BAM. It only uses the DS tag value in the first BAM file of a group."
 
-  lb_tag:
-    type: string?
-    default: "null"
-    doc: "Sequencing library tag values in the output BAM header. Use empty string to set it to none or existing LB tag in the input BAM."
+  pl_tags:
+    type:
+      type: array
+      items: ["null", string]
+    doc: "Platform tag value in the output BAM header. It should have one value for each group of input raw files. Use empty string to set it to none or existing PL tag in the input BAM. It only uses the PL tag value in the first BAM file of a group."
 
-  ds_tag:
-    type: string?
-    default: "null"
-    doc: "Description tag value in the output BAM header. Use empty string to set it to none or existing DS tag in the input BAM."
-
-  pl_tag:
-    type: string?
-    default: "null"
-    doc: "Platform tag value in the output BAM header. Use empty string to set it to none or existing PL tag in the input BAM."
-
-  pu_tag:
-    type: string?
-    default: "null"
-    doc: "Platform unit tag value in the output BAM header. Use empty string to set it to none or existing PU tag in the input BAM."
+  pu_tags:
+    type:
+      type: array
+      items: ["null", string]
+    doc: "Platform unit tag value in the output BAM header. It should have one value for each group of input raw files. Use empty string to set it to none or existing PU tag in the input BAM. It only uses the PU tag value in the first BAM file of a group."
 
 outputs:
   dup_marked_bam:
@@ -187,7 +169,8 @@ steps:
   map_and_stats:
     in:
       raw_reads:
-        source: raw_reads
+        source: [ raw_reads1, raw_reads2 ]
+        linkMerge: merge_nested
       map_reference:
         source: map_reference
       sample_name:
@@ -197,18 +180,18 @@ steps:
       map_threads:
         source: map_threads
       rg_id_tag:
-        source: rg_id_tag
+        source: rg_id_tags
       lb_tag:
-        source: lb_tag
+        source: lb_tags
       ds_tag:
-        source: ds_tag
+        source: ds_tags
       pl_tag:
-        source: pl_tag
+        source: pl_tags
       pu_tag:
-        source: pu_tag
+        source: pu_tags
     out: [dup_marked_bam, dup_marked_bam_dup_met, transcriptome_bam, rna_bas, gene_cover_png, gene_body_coverage_rscript, gene_body_coverage_txt, gene_body_coverage_updated_rscript, read_dist]
-#    scatter: [raw_reads, rg_id_tag, lb_tag, ds_tag, pl_tag, pu_tag]
-#    scatterMethod: dotproduct
+    scatter: [raw_reads, rg_id_tag, lb_tag, ds_tag, pl_tag, pu_tag]
+    scatterMethod: dotproduct
     run: tools/lane_map_and_stats.cwl
 
   merge:
