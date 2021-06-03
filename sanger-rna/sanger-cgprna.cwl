@@ -32,7 +32,8 @@ inputs:
 
   raw_reads:
     doc: "RAW read input, can be BAM files or pairs of FastQ files (optionally gzip compressed)"
-    type: array
+    type:
+      type: array
       items: File
 
   map_reference:
