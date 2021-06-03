@@ -207,7 +207,7 @@ steps:
         source: pu_tag
     out: [dup_marked_bam, dup_marked_bam_dup_met, transcriptome_bam, rna_bas, gene_cover_png, gene_body_coverage_rscript, gene_body_coverage_txt, gene_body_coverage_updated_rscript, read_dist]
 #    scatter: [raw_reads, rg_id_tag, lb_tag, ds_tag, pl_tag, pu_tag]
-    scatterMethod: dotproduct
+#    scatterMethod: dotproduct
     run: tools/lane_map_and_stats.cwl
 
   merge:
