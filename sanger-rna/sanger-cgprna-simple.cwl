@@ -95,15 +95,15 @@ inputs:
 outputs:
   dup_marked_bam:
     type: File
-    outputSource: merge/dup_marked_merged_bam
+    outputSource: map_and_stats/dup_marked_bam
 
-  dup_marked_bam_md5:
-    type: File
-    outputSource: merge/dup_marked_bam_md5
-
-  dup_marked_bam_dup_met:
-    type: File
-    outputSource: merge/dup_marked_bam_dup_met
+#  dup_marked_bam_md5:
+#    type: File
+#    outputSource: merge/dup_marked_bam_md5
+#
+#  dup_marked_bam_dup_met:
+#    type: File
+#    outputSource: merge/dup_marked_bam_dup_met
 
   transcriptome_lane_bams:
     type: File
@@ -206,7 +206,7 @@ steps:
   count:
     in:
       sample_bam:
-        source: merge/dup_marked_merged_bam
+        source: map_and_stats/dup_marked_bam
       reference:
         source: count_reference
     out: [out_count]
