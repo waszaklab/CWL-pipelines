@@ -108,35 +108,35 @@ outputs:
     outputSource: merge/dup_marked_bam_dup_met
 
   transcriptome_lane_bams:
-    type: File[]
+    type: File
     outputSource: map_and_stats/transcriptome_bam
 
   dup_marked_lane_bam_dup_mets:
-    type: File[]
+    type: File
     outputSource: map_and_stats/dup_marked_bam_dup_met
 
   rna_bas_files:
-    type: File[]
+    type: File
     outputSource: map_and_stats/rna_bas
 
   gene_cover_pngs:
-    type: File[]
+    type: File
     outputSource: map_and_stats/gene_cover_png
 
   gene_body_coverage_rscripts:
-    type: File[]
+    type: File
     outputSource: map_and_stats/gene_body_coverage_rscript
 
   gene_body_coverage_txts:
-    type: File[]
+    type: File
     outputSource: map_and_stats/gene_body_coverage_txt
 
   gene_body_coverage_updated_rscripts:
-    type: File[]
+    type: File
     outputSource: map_and_stats/gene_body_coverage_updated_rscript
 
   read_dists:
-    type: File[]
+    type: File
     outputSource: map_and_stats/read_dist
 
   out_bw:
