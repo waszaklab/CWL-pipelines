@@ -60,13 +60,13 @@ inputs:
       separate: true
       shellQuote: false
 
-#  groupinfo:
-#    type: File?
-#    doc: "Readgroup metadata file for FASTQ inputs"
-#    inputBinding:
-#      prefix: -groupinfo
-#      position: 5
-#      separate: true
+  groupinfo:
+    type: File?
+    doc: "Readgroup metadata file for FASTQ inputs"
+    inputBinding:
+      prefix: -groupinfo
+      position: 5
+      separate: true
 
   mmqc:
     type: boolean
