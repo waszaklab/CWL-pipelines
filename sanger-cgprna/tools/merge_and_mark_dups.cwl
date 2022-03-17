@@ -29,13 +29,11 @@ hints:
 
 inputs:
   sorted_bams:
+    type: File
     doc: "BAM files to be merged."
-    type:
-      type: array
-      items: File
-      inputBinding:
-        prefix: I=
-        separate: false
+    inputBinding:
+      prefix: I=
+      separate: false
 
   threads:
     type: int?

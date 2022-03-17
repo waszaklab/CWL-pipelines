@@ -95,15 +95,15 @@ inputs:
 outputs:
   dup_marked_bam:
     type: File
-    outputSource: map_and_stats/dup_marked_bam
+    outputSource: merge/dup_marked_merged_bam
 
-#  dup_marked_bam_md5:
-#    type: File
-#    outputSource: merge/dup_marked_bam_md5
-#
-#  dup_marked_bam_dup_met:
-#    type: File
-#    outputSource: merge/dup_marked_bam_dup_met
+  dup_marked_bam_md5:
+    type: File
+    outputSource: merge/dup_marked_bam_md5
+
+  dup_marked_bam_dup_met:
+    type: File
+    outputSource: merge/dup_marked_bam_dup_met
 
   transcriptome_lane_bams:
     type: File
@@ -171,31 +171,31 @@ steps:
     out: [dup_marked_bam, dup_marked_bam_dup_met, transcriptome_bam, rna_bas, gene_cover_png, gene_body_coverage_rscript, gene_body_coverage_txt, gene_body_coverage_updated_rscript, read_dist]
     run: tools/lane_map_and_stats.cwl
 
-#  merge:
-#    in:
-#      sorted_bams:
-#        source: map_and_stats/dup_marked_bam
-#      threads:
-#        source: merge_threads
-#      out_bam_name:
-#        source: sample_name
-#        valueFrom: $(self).bam
-#      out_bam_index_name:
-#        source: sample_name
-#        valueFrom: $(self).bam.bai
-#      md5_file_name:
-#        source: sample_name
-#        valueFrom: $(self).bam.md5
-#      dup_met_file_name:
-#        source: sample_name
-#        valueFrom: $(self).bam.met
-#    out: [dup_marked_merged_bam, dup_marked_bam_dup_met, dup_marked_bam_md5]
-#    run: tools/merge_and_mark_dups.cwl
+  merge:
+    in:
+      sorted_bams:
+        source: map_and_stats/dup_marked_bam
+      threads:
+        source: merge_threads
+      out_bam_name:
+        source: sample_name
+        valueFrom: $(self).bam
+      out_bam_index_name:
+        source: sample_name
+        valueFrom: $(self).bam.bai
+      md5_file_name:
+        source: sample_name
+        valueFrom: $(self).bam.md5
+      dup_met_file_name:
+        source: sample_name
+        valueFrom: $(self).bam.met
+    out: [dup_marked_merged_bam, dup_marked_bam_dup_met, dup_marked_bam_md5]
+    run: tools/merge_and_mark_dups.cwl
 
   bigwig:
     in:
       sample_bam:
-        source: map_and_stats/dup_marked_bam
+        source: merge/dup_marked_merged_bam
       reference:
         source: bigwig_reference
       threads:
@@ -206,7 +206,7 @@ steps:
   count:
     in:
       sample_bam:
-        source: map_and_stats/dup_marked_bam
+        source: merge/dup_marked_merged_bam
       reference:
         source: count_reference
     out: [out_count]
