@@ -74,7 +74,7 @@ steps:
         source: sample_name
         valueFrom: |
           ${
-            return self + '.lane.' + inputs.raw_reads[0].nameroot;
+            return self;
           }
       threads:
         source: map_threads
